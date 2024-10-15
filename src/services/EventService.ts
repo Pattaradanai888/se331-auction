@@ -1,7 +1,7 @@
-import axios from 'axios'
+import axios, { type AxiosResponse } from 'axios'
 
 const apiClient = axios.create({
-  baseURL: 'https://my-json-server.typicode.com/code-pop/touring-vue-router',
+  baseURL: import.meta.env.VITE_BACKEND_URL,
   withCredentials: false,
   headers: {
     Accept: 'application/json',
@@ -11,9 +11,9 @@ const apiClient = axios.create({
 
 export default {
   getEvents(perPage: Number, page: Number) {
-    return apiClient.get('/events?_limit=' + perPage + '&_page=' + page)
+    return apiClient.get('/auctions?_limit=' + perPage + '&_page=' + page)
   },
-  getEvent(id: number) {
-    return apiClient.get('/events/' + id)
-  }
+  getEventsByKeyword(keyword: string, perPage: number,page: number) : Promise<AxiosResponse<Event[]>> {
+    return apiClient.get<Event[]>('/auctions?description=' + keyword + '&_limit='+ perPage + '&_page=' + page)
+  },
 }
